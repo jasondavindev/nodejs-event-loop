@@ -1,20 +1,28 @@
-process.env.UV_THREADPOOL_SIZE = 6;
-const crypto = require('crypto');
+// process.env.UV_THREADPOOL_SIZE = 6;
+
+const { request } = require('http');
+const { pbkdf2 } = require('crypto');
+const fs = require('fs');
 
 const start = Date.now();
 
 function doHash(n) {
-	crypto.pbkdf2('a', 'b', 100000, 512, 'sha512', () => {
-		console.log(n, Date.now() - start);
+	pbkdf2('a', 'b', 100000, 512, 'sha512', () => {
+		console.log(n, 'hash', Date.now() - start);
 	});
 }
 
+function doRequest() {
+	request('http://www.google.com', () => console.log('request', Date.now() - start)).end();
+}
+
+function readFile() {
+	fs.readFile('./event_loop.js', 'utf-8', () => console.log('fs', Date.now() - start));
+}
+
+doRequest();
+readFile();
 doHash(1);
 doHash(2);
 doHash(3);
 doHash(4);
-doHash(5);
-doHash(6);
-doHash(7);
-doHash(8);
-doHash(9);
