@@ -13,7 +13,7 @@ function doHash(n) {
 }
 
 function doRequest() {
-	request('http://www.google.com', res => {
+	request('http://www.google.com', (res) => {
 		res.on('data', () => {});
 		res.on('end', () => console.log('request', Date.now() - start));
 	}).end();
@@ -29,11 +29,3 @@ doHash(1);
 doHash(2);
 doHash(3);
 doHash(4);
-
-// Output
-// request 147
-// 4 'hash' 1604
-// fs 1608 -> because enter in the next tick
-// 2 'hash' 1621
-// 1 'hash' 1648
-// 3 'hash' 1666
